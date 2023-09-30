@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React, { FormEvent, useEffect, useState } from "react";
 import logo from '@/public/carro.jpg';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 type DataItem = {
   id: number;
@@ -57,9 +58,10 @@ export function Main() {
             },
             body: JSON.stringify(novoDado),
           })
-            .then((resp) => resp.json())
+            //.then((resp) => resp.json())
             .then((data) => {
-              alert("Dados enviados com sucesso:");
+              //alert("Dados enviados com sucesso:");
+              toast.success('Dados enviados com sucesso')
               
               setnome('');
               setmensagem('');
