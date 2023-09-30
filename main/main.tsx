@@ -58,22 +58,22 @@ export function Main() {
             },
             body: JSON.stringify(novoDado),
           })
-            //.then((resp) => resp.json())
+            .then((resp) => resp.json())
             .then((data) => {
               //alert("Dados enviados com sucesso:");
-              toast.success('Dados enviados com sucesso')
-              
-              setnome('');
-              setmensagem('');
-              setvalor('');
               
               setdados([...dados, data]);
-
+              
             })
             .catch((error) => {
               console.error("Erro ao enviar dados:", error);
             });
-        };
+            toast.success('Dados enviados com sucesso')
+            
+            setnome('');
+            setmensagem('');
+            setvalor('');
+          };
 
   const deleteItem = (id: number) => {
     fetch(`https://newtailwindjson.vercel.app/posts/${id}`, {
