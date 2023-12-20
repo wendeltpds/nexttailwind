@@ -3,7 +3,8 @@ import Image from 'next/image';
 import React, { FormEvent, useEffect, useState } from "react";
 import logo from '@/public/carro.jpg';
 import Link from 'next/link';
-import { toast } from 'react-toastify';
+import { UseFilter } from '@/hooks/useFilter';
+import { Helpers  } from '@/helpers/helpers';
 
 type DataItem = {
   id: number;
@@ -13,117 +14,18 @@ type DataItem = {
 };
 
 
-export function Main() {
+export function Main() { 
 
-  const [dados, setdados] = useState<DataItem[]>([]);
-  const [nome, setnome] = useState<string>("");
-  const [mensagem, setmensagem] = useState<string>('');
-  const [valor, setvalor] = useState<number| string>();
+  const { handleSubmit, deleteItem, handleEditarItem, handleAtualizarItem } = Helpers();
 
-
-
-  const [itemEditandoId, setItemEditandoId] = useState<number | null>(null);
-  const [nomeEditado, setNomeEditado] = useState('');
-  const [mensagemEditada, setMensagemEditada] = useState('');
-  const [valorEditado, setValorEditado] = useState('');
-
-
-
-      useEffect(() => {
-          fetch('https://newtailwindjson.vercel.app/posts', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          })
-            .then((resp) => resp.json())
-            .then((data) => {
-              setdados(data);
-            });
-        }, [dados]);
-      
-        const handleSubmit = (e: React.FormEvent) => {
-          e.preventDefault();
-      
-          const novoDado = {
-            nome: nome,
-            mensagem: mensagem,
-            valor: valor,
-          };
-      
-          fetch('https://newtailwindjson.vercel.app/posts', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(novoDado),
-          })
-            .then((resp) => resp.json())
-            .then((data) => {
-              //alert("Dados enviados com sucesso:");
-              
-              setdados([...dados, data]);
-              
-            })
-            .catch((error) => {
-              console.error("Erro ao enviar dados:", error);
-            });
-            toast.success('Dados enviados com sucesso')
-            
-            setnome('');
-            setmensagem('');
-            setvalor('');
-          };
-
-  const deleteItem = (id: number) => {
-    fetch(`https://newtailwindjson.vercel.app/posts/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-      .then((resp) => resp.json())
-      .then(() => {
-        setdados(dados.filter((project) => project.id !== id));
-      });
-  };
-
-
-  const handleEditarItem = (item: DataItem) => {
-    setItemEditandoId(item.id);
-    setNomeEditado(item.nome);
-    setMensagemEditada(item.mensagem);
-    setValorEditado(item.valor.toString());
-  };
-  
-  const handleAtualizarItem = (id: number) => {
-    const dadosAtualizados = {
-      nome: nomeEditado,
-      mensagem: mensagemEditada,
-      valor: valorEditado,
-    };
-  
-    fetch(`https://newtailwindjson.vercel.app/posts/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dadosAtualizados)
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        const novosDados = dados.map((item) => (item.id === id ? data : item));
-        setdados(novosDados);
-  
-        setItemEditandoId(null);
-        setNomeEditado('');
-        setMensagemEditada('');
-        setValorEditado('');
-      })
-      .catch((error) => {
-        console.log("Erro ao atualizar dados:", error);
-      });
-  };
+  const { setdados , dados , valorEditado, setValorEditado ,
+     mensagemEditada, setMensagemEditada ,
+     nomeEditado, setNomeEditado ,
+     itemEditandoId, setItemEditandoId ,
+     valor, setvalor ,
+     mensagem, setmensagem ,
+     nome, setNome
+  } = UseFilter();
 
 
   return (
@@ -138,7 +40,7 @@ export function Main() {
           name="nome"
           placeholder="Nome"
           value={nome}
-          onChange={(e) => setnome(e.target.value)}
+          onChange={(e) => setNome(e.target.value)}
           required
           className=' border-2 border-black mr-4'
         />
@@ -233,7 +135,6 @@ export function Main() {
                 comprar
               </button>
             </Link>
-
             </div>
           </div>
         </section>

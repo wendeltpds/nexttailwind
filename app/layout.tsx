@@ -2,6 +2,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import {Header}  from  '@/header/header'
+import { FilterContextProvider } from '@/contextos/contexts'
+import SessionProvider from '@/provider/SessionProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,8 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <Header />
-        {children}
+        <FilterContextProvider>
+          <SessionProvider>
+            <Header />
+            {children}
+          </SessionProvider>
+        </FilterContextProvider>
       </body>
     </html>
   )

@@ -19,15 +19,12 @@ const Pagamento = async ({params: {pag}} : {params : {pag: number}}) => {
         if (minutos.valueOf() < 10) {
             minutos = 0 + '' + minutos
         }
-
         if(hora.valueOf() < 10) {
             hora = 0 + '' + hora
         }
-
         if(mes.valueOf() < 10) {
             mes = 0 + '' + mes
         }
-        
         let dataFormatada = dia + '/' + mes + '/' + ano;
 
 
@@ -45,7 +42,7 @@ const Pagamento = async ({params: {pag}} : {params : {pag: number}}) => {
 
                     <div className=" border-t-2  flex flex-col items-center" >
                         <h1 className="mt-2" > valor total :</h1>
-                        <h1>R${total}</h1>
+                        <h1>R${total.toFixed(2)}</h1>
                     </div>
                     <div className="w-full flex justify-around mb-4">
                         <Link className="hover:scale-110" href={`/pais/${pag}`} >
